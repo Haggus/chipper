@@ -1,0 +1,6 @@
+[package]
+name = "chipper"
+version = "0.1.0"
+authors = ["Mateusz 'Haggus' Mrowiec <matt.mrowiec@gmail.com>"]
+
+[dependencies]
