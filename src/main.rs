@@ -1,4 +1,4 @@
-struct chip8 {
+struct Chip8 {
     // The systems memory map:
     // 0x000-0x1FF - Chip 8 interpreter (contains font set in emu)
     // 0x050-0x0A0 - Used for the built in 4x5 pixel font set (0-F)
@@ -34,5 +34,25 @@ struct chip8 {
 }
 
 fn main() {
-    println!("Hello, world!");
+    // Set up render system and register input callbacks
+    println!("Setup graphics");
+    println!("Setup input");
+
+    // Initialize the Chip8 system and load the game into the memory
+    println!("Chip8 initialize");
+    println!("Chip8 load game");
+
+    // Emulation loop
+    loop {
+        // Emulate one cycle
+        println!("Chip8 emulate cycle");
+
+        // If the draw flag is set, update the screen
+        println!("If Chip8 draw flag, then draw graphics");
+
+        // Store key press state (Press and Release)
+        println!("Chip8 set keys");
+
+        break;
+    }
 }
