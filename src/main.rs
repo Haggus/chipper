@@ -33,19 +33,50 @@ struct Chip8 {
     key: [u8; 16],
 }
 
+impl Chip8 {
+    fn new() -> Chip8 {
+        // Initialize memory and registers
+        Chip8 {
+            opcode: 0,
+            memory: [0; 4000],
+            v: [0; 16],
+            i: 0,
+            pc: 0,
+            gfx: [0; 64 * 32],
+            delay_timer: 0,
+            sound_timer: 0,
+            stack: [0; 16],
+            sp: 0,
+            key: [0; 16],
+        }
+    }
+
+    fn loadGame(&mut self) {
+        // Load game file to memory
+    }
+
+    fn emulateCycle(&self) {
+        // Fetch opcode
+        // Decode opcode
+        // Execute opcode
+
+        // Update timers
+    }
+}
+
 fn main() {
     // Set up render system and register input callbacks
     println!("Setup graphics");
     println!("Setup input");
 
     // Initialize the Chip8 system and load the game into the memory
-    println!("Chip8 initialize");
-    println!("Chip8 load game");
+    let mut cpu = Chip8::new();
+    cpu.loadGame();
 
     // Emulation loop
     loop {
         // Emulate one cycle
-        println!("Chip8 emulate cycle");
+        cpu.emulateCycle();
 
         // If the draw flag is set, update the screen
         println!("If Chip8 draw flag, then draw graphics");
