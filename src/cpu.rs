@@ -1,3 +1,6 @@
+use std::fs::File;
+use std::io::Read;
+
 pub struct Chip8 {
     // The systems memory map:
     // 0x000-0x1FF - Chip 8 interpreter (contains font set in emu)
@@ -51,8 +54,12 @@ impl Chip8 {
         }
     }
 
-    pub fn loadGame(&mut self) {
+    pub fn loadGame(&mut self, game: &str) {
         // Load game file to memory
+        let mut file = File::open(game).unwrap();
+        let size = file.read(&mut self.memory[..]).unwrap();
+
+        println!("Game {} loaded ({} bytes)", game, size);
     }
 
     pub fn emulateCycle(&self) {

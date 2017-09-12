@@ -9,7 +9,7 @@ fn main() {
 
     // Initialize the Chip8 system and load the game into the memory
     let mut cpu = Chip8::new();
-    cpu.loadGame();
+    cpu.loadGame("PONG2");
 
     // Emulation loop
     loop {
