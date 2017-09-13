@@ -63,12 +63,12 @@ impl Chip8 {
         println!("Game {} loaded ({} bytes)", game, size);
     }
 
-    pub fn emulateCycle(&self) {
+    pub fn emulateCycle(&mut self) {
         // Fetch opcode
         let first = self.memory[self.pc as usize] as u16;
         let second = self.memory[(self.pc + 1) as usize] as u16;
-        let opcode = first << 8 | second;
-        println!("Opcode fetched: {:x}", opcode);
+        self.opcode = first << 8 | second;
+        println!("Opcode fetched: {:x}", self.opcode);
 
         // Decode opcode
         // Execute opcode
