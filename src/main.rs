@@ -9,12 +9,12 @@ fn main() {
 
     // Initialize the Chip8 system and load the game into the memory
     let mut cpu = Chip8::new();
-    cpu.loadGame("PONG2");
+    cpu.load_game("PONG2");
 
     // Emulation loop
     loop {
         // Emulate one cycle
-        cpu.emulateCycle();
+        cpu.emulate_cycle();
 
         // If the draw flag is set, update the screen
         println!("If Chip8 draw flag, then draw graphics");

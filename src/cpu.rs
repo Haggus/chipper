@@ -54,7 +54,7 @@ impl Chip8 {
         }
     }
 
-    pub fn loadGame(&mut self, game: &str) {
+    pub fn load_game(&mut self, game: &str) {
         // Load game file to memory
         let mut file = File::open(game).unwrap();
         // Start loading at 0x200 (512)
@@ -63,7 +63,7 @@ impl Chip8 {
         println!("Game {} loaded ({} bytes)", game, size);
     }
 
-    pub fn emulateCycle(&mut self) {
+    pub fn emulate_cycle(&mut self) {
         // Fetch opcode
         let first = self.memory[self.pc as usize] as u16;
         let second = self.memory[(self.pc + 1) as usize] as u16;
