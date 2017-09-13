@@ -44,7 +44,7 @@ impl Chip8 {
             memory: [0; 4000],
             v: [0; 16],
             i: 0,
-            pc: 0,
+            pc: 0x200, // program counter starts at 0x200
             gfx: [0; 64 * 32],
             delay_timer: 0,
             sound_timer: 0,
