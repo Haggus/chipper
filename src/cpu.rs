@@ -64,6 +64,11 @@ impl Chip8 {
 
     pub fn emulateCycle(&self) {
         // Fetch opcode
+        let first = self.memory[self.pc as usize] as u16;
+        let second = self.memory[(self.pc + 1) as usize] as u16;
+        let opcode = first << 8 | second;
+        println!("Opcode fetched: {:x}", opcode);
+
         // Decode opcode
         // Execute opcode
 
