@@ -57,7 +57,8 @@ impl Chip8 {
     pub fn loadGame(&mut self, game: &str) {
         // Load game file to memory
         let mut file = File::open(game).unwrap();
-        let size = file.read(&mut self.memory[..]).unwrap();
+        // Start loading at 0x200 (512)
+        let size = file.read(&mut self.memory[0x200..]).unwrap();
 
         println!("Game {} loaded ({} bytes)", game, size);
     }
