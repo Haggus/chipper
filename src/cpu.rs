@@ -70,8 +70,21 @@ impl Chip8 {
         self.opcode = first << 8 | second;
         println!("Opcode fetched: {:x}", self.opcode);
 
-        // Decode opcode
-        // Execute opcode
+        // Decode & execute opcode
+        match self.opcode & 0xF000 {
+            0x2000 => {
+                // Store current program counter on the stack
+                self.stack[self.sp as usize] = self.pc;
+
+                // Increase the stack pointer to prevent overwriting the current stack
+                self.sp += 1;
+
+                self.pc = self.opcode & 0x0FFF;
+                println!("Call subroutine at {:x}", self.pc);
+                // Because it is a subroutine, we should not increase program counter
+            },
+            _ => panic!("opcode has not been implemented yet"),
+        };
 
         // Update timers
         if self.delay_timer > 0 {
