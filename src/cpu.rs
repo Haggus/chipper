@@ -174,6 +174,15 @@ impl Chip8 {
                         self.pc += 2;
                         println!("Binary-coded decimal saved into memory");
                     },
+                    0x0065 => {
+                        let register = (self.opcode & 0x0F00) >> 8;
+
+                        for i in 0..register + 1 {
+                            self.v[i as usize] = self.memory[self.i as usize];
+                        }
+                        self.pc += 2;
+                        println!("V[{:x}] - V[{:x}] values have been replaced with {:x}", 0, register, self.memory[self.i as usize]);
+                    }
                     _ => panic!("Unknown opcode: {:x}", self.opcode),
                 }
             },
