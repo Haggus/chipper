@@ -125,8 +125,8 @@ impl Chip8 {
                 println!("Set I to {:x}", address);
             },
             0xD000 => {
-                let x = self.v[((self.opcode & 0x0F00) >> 8) as usize];
-                let y = self.v[((self.opcode & 0x00F0) >> 4) as usize];
+                let x = self.v[((self.opcode & 0x0F00) >> 8) as usize] as u16;
+                let y = self.v[((self.opcode & 0x00F0) >> 4) as usize] as u16;
                 let height = self.opcode & 0x000F;
                 println!("Draw to screen. Lines: {}, starting at x={}, y={}", height, x, y);
 
@@ -136,7 +136,7 @@ impl Chip8 {
 
                     for b in (0..8).rev() {
                         if (line & (1 << b)) != 0 {
-                            let pixel = x + b + ((y + h as u8) * 64);
+                            let pixel = x + b as u16 + ((y + h) * 64) as u16;
 
                             if self.gfx[pixel as usize] == 1 {
                                 self.v[0xF] = 1;
