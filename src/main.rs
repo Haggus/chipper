@@ -21,7 +21,5 @@ fn main() {
 
         // Store key press state (Press and Release)
         println!("Chip8 set keys");
-
-        break;
     }
 }
