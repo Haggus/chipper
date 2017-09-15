@@ -74,6 +74,10 @@ impl Chip8 {
 
         // Decode & execute opcode
         match self.opcode & 0xF000 {
+            0x1000 => {
+                self.pc = self.opcode & 0x0FFF;
+                println!("Jump to {:x}", self.pc);
+            },
             0x2000 => {
                 // Store current program counter on the stack
                 self.stack[self.sp as usize] = self.pc;
