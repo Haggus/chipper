@@ -74,6 +74,18 @@ impl Chip8 {
 
         // Decode & execute opcode
         match self.opcode & 0xF000 {
+            0x0000 => {
+                match self.opcode & 0x000F {
+                    0x000E => {
+                        self.sp -= 1;
+                        self.pc = self.stack[self.sp as usize];
+
+                        self.pc += 2;
+                        println!("Return from subroutine");
+                    },
+                    _ => panic!("Unknown opcode: {:x}", self.opcode),
+                }
+            },
             0x1000 => {
                 self.pc = self.opcode & 0x0FFF;
                 println!("Jump to {:x}", self.pc);
