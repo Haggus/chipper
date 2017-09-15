@@ -162,6 +162,21 @@ impl Chip8 {
                 self.draw_flag = true;
                 self.pc += 2;
             },
+            0xF000 => {
+                match self.opcode & 0x00FF {
+                    0x0033 => {
+                        let register = (self.opcode & 0x0F00) >> 8;
+                        let vx = self.v[register as usize];
+                        self.memory[self.i as usize] = vx / 100;
+                        self.memory[self.i as usize + 1] = (vx / 10) % 10;
+                        self.memory[self.i as usize + 2] = (vx % 100) % 10;
+
+                        self.pc += 2;
+                        println!("Binary-coded decimal saved into memory");
+                    },
+                    _ => panic!("Unknown opcode: {:x}", self.opcode),
+                }
+            },
             _ => panic!("opcode has not been implemented yet"),
         };
 
