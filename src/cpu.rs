@@ -89,8 +89,8 @@ impl Chip8 {
 
                 self.v[register as usize] = value as u8;
                 self.pc += 2;
-                println!("Set V[{:x}] to {:x}", (self.opcode & 0x0F00) >> 8, self.opcode & 0x00FF);
-            }
+                println!("Set V[{:x}] to {:x}", register, value);
+            },
             _ => panic!("opcode has not been implemented yet"),
         };
 
