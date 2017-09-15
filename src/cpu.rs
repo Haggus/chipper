@@ -91,6 +91,13 @@ impl Chip8 {
                 self.pc += 2;
                 println!("Set V[{:x}] to {:x}", register, value);
             },
+            0xA000 => {
+                let address = self.opcode & 0x0FFF;
+
+                self.i = address;
+                self.pc += 2;
+                println!("Set I to {:x}", address);
+            },
             _ => panic!("opcode has not been implemented yet"),
         };
 
