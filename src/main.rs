@@ -17,9 +17,6 @@ fn main() {
         cpu.emulate_cycle();
 
         // If the draw flag is set, update the screen
-        println!("If Chip8 draw flag, then draw graphics");
-
         // Store key press state (Press and Release)
-        println!("Chip8 set keys");
     }
 }
