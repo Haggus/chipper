@@ -22,6 +22,7 @@ pub struct Chip8 {
 
     // The graphics of the Chip 8 are black and white and the screen has a total of 2048 pixels (64 x 32). This can easily be implemented using an array that hold the pixel state (1 or 0):
     gfx: [u8; 64 * 32],
+    draw_flag: bool,
 
     // Interupts and hardware registers. The Chip 8 has none, but there are two timer registers that count at 60 Hz. When set above zero they will count down to zero.
     // The system’s buzzer sounds whenever the sound timer reaches zero.
@@ -46,6 +47,7 @@ impl Chip8 {
             i: 0,
             pc: 0x200, // program counter starts at 0x200
             gfx: [0; 64 * 32],
+            draw_flag: false,
             delay_timer: 0,
             sound_timer: 0,
             stack: [0; 16],
@@ -97,6 +99,32 @@ impl Chip8 {
                 self.i = address;
                 self.pc += 2;
                 println!("Set I to {:x}", address);
+            },
+            0xD000 => {
+                let x = self.v[((self.opcode & 0x0F00) >> 8) as usize];
+                let y = self.v[((self.opcode & 0x00F0) >> 4) as usize];
+                let height = self.opcode & 0x000F;
+                println!("Draw to screen. Lines: {}, starting at x={}, y={}", height, x, y);
+
+                self.v[0xF] = 0;
+                for h in 0..height {
+                    let line = self.memory[(self.i + h) as usize];
+
+                    for b in (0..8).rev() {
+                        if (line & (1 << b)) != 0 {
+                            let pixel = x + b + ((y + h as u8) * 64);
+
+                            if self.gfx[pixel as usize] == 1 {
+                                self.v[0xF] = 1;
+                            }
+
+                            self.gfx[pixel as usize] ^= 1;
+                        }
+                    }
+                }
+
+                self.draw_flag = true;
+                self.pc += 2;
             },
             _ => panic!("opcode has not been implemented yet"),
         };
