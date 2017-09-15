@@ -93,6 +93,14 @@ impl Chip8 {
                 self.pc += 2;
                 println!("Set V[{:x}] to {:x}", register, value);
             },
+            0x7000 => {
+                let register = (self.opcode & 0x0F00) >> 8;
+                let value = self.opcode & 0x00FF;
+
+                self.v[register as usize] += value as u8;
+                self.pc += 2;
+                println!("Add {:x} to V[{:x}]", value, register);
+            }
             0xA000 => {
                 let address = self.opcode & 0x0FFF;
 
