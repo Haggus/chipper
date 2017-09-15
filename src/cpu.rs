@@ -83,6 +83,14 @@ impl Chip8 {
                 println!("Call subroutine at {:x}", self.pc);
                 // Because it is a subroutine, we should not increase program counter
             },
+            0x6000 => {
+                let register = (self.opcode & 0x0F00) >> 8;
+                let value = self.opcode & 0x00FF;
+
+                self.v[register as usize] = value as u8;
+                self.pc += 2;
+                println!("Set V[{:x}] to {:x}", (self.opcode & 0x0F00) >> 8, self.opcode & 0x00FF);
+            }
             _ => panic!("opcode has not been implemented yet"),
         };
 
