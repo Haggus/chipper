@@ -23,8 +23,8 @@ pub struct Chip8 {
     pc: u16,
 
     // The graphics of the Chip 8 are black and white and the screen has a total of 2048 pixels (64 x 32). This can easily be implemented using an array that hold the pixel state (1 or 0):
-    gfx: [u8; 64 * 32],
-    draw_flag: bool,
+    pub gfx: [u8; 64 * 32],
+    pub draw_flag: bool,
 
     // Interupts and hardware registers. The Chip 8 has none, but there are two timer registers that count at 60 Hz. When set above zero they will count down to zero.
     // The system’s buzzer sounds whenever the sound timer reaches zero.
