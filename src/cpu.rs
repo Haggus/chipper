@@ -180,6 +180,21 @@ impl Chip8 {
                 self.draw_flag = true;
                 self.pc += 2;
             },
+            0xE000 => {
+                match self.opcode & 0x00FF {
+                    0x00A1 => {
+                        let vx = self.v[((self.opcode & 0x0F00) >> 8) as usize];
+                        if self.key[vx as usize] != 1 {
+                            println!("Key {:x} is NOT pressed. Skipping the next instruction", vx);
+                            self.pc += 4;
+                        } else {
+                            println!("Key {:x} is pressed", vx);
+                            self.pc += 2;
+                        }
+                    },
+                    _ => panic!("Unknown opcode: {:x}", self.opcode),
+                }
+            },
             0xF000 => {
                 match self.opcode & 0x00FF {
                     0x0007 => {
