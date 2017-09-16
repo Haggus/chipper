@@ -159,8 +159,7 @@ impl Chip8 {
                         println!("Sets V[{:x}] to V[{:x}] and V[{:x}] (Bitwise OR)", vx, vx, vy);
                     },
                     0x0004 => {
-                        let (value, overflow) = self.v[vy as usize].overflowing_add(self.v[vx as usize]);
-
+                        let (value, overflow) = self.v[vx as usize].overflowing_add(self.v[vy as usize]);
                         if overflow {
                             self.v[0xF] = 1;
                         } else {
@@ -170,6 +169,18 @@ impl Chip8 {
 
                         self.pc += 2;
                         println!("Add V[{:x}] to V[{:x}]", vy, vx);
+                    },
+                    0x0005 => {
+                        let (value, overflow) = self.v[vx as usize].overflowing_sub(self.v[vy as usize]);
+                        if overflow {
+                            self.v[0xF] = 0;
+                        } else {
+                            self.v[0xF] = 1;
+                        }
+                        self.v[vx as usize] = value;
+
+                        self.pc += 2;
+                        println!("Subtract V[{:x}] from V[{:x}]", vy, vx);
                     },
                     _ => panic!("Unknown opcode: {:x}", self.opcode),
                 }
