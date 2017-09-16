@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::Read;
+use rand::random;
 
 use font::FONTSET;
 
@@ -137,13 +138,21 @@ impl Chip8 {
                 self.v[register as usize] += value as u8;
                 self.pc += 2;
                 println!("Add {:x} to V[{:x}]", value, register);
-            }
+            },
             0xA000 => {
                 let address = self.opcode & 0x0FFF;
 
                 self.i = address;
                 self.pc += 2;
                 println!("Set I to {:x}", address);
+            },
+            0xC000 => {
+                let register = (self.opcode & 0x0F00) >> 8;
+                let value = self.opcode & 0x00FF;
+
+                self.v[register as usize] = (random::<u8>() as u16 & value) as u8;
+                self.pc += 2;
+                println!("Random value saved in V[{:x}]", register);
             },
             0xD000 => {
                 let x = self.v[((self.opcode & 0x0F00) >> 8) as usize] as u16;
@@ -212,7 +221,7 @@ impl Chip8 {
                         }
                         self.pc += 2;
                         println!("V[{:x}] - V[{:x}] values have been replaced with {:x}", 0, register, self.memory[self.i as usize]);
-                    }
+                    },
                     _ => panic!("Unknown opcode: {:x}", self.opcode),
                 }
             },
