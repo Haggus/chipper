@@ -139,6 +139,19 @@ impl Chip8 {
                 self.pc += 2;
                 println!("Add {:x} to V[{:x}]", value, register);
             },
+            0x8000 => {
+                match self.opcode & 0x000F {
+                    0x0002 => {
+                        let vx = (self.opcode & 0x0F00) >> 8;
+                        let vy = (self.opcode & 0x00F0) >> 8;
+                        self.v[vx as usize] = self.v[vx as usize] & self.v[vy as usize];
+
+                        self.pc += 2;
+                        println!("Sets V[{:x}] to V[{:x}] and V[{:x}] (Bitwise OR)", vx, vx, vy);
+                    },
+                    _ => panic!("Unknown opcode: {:x}", self.opcode),
+                }
+            },
             0xA000 => {
                 let address = self.opcode & 0x0FFF;
 
