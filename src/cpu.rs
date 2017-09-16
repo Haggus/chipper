@@ -173,6 +173,13 @@ impl Chip8 {
             },
             0xF000 => {
                 match self.opcode & 0x00FF {
+                    0x0029 => {
+                        let vx = self.v[((self.opcode & 0x0F00) >> 8) as usize];
+                        self.i = self.memory[(vx * 5) as usize] as u16;
+
+                        self.pc += 2;
+                        println!("Set I to address of digit \"{}\"", vx);
+                    },
                     0x0033 => {
                         let register = (self.opcode & 0x0F00) >> 8;
                         let vx = self.v[register as usize];
