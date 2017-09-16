@@ -173,6 +173,13 @@ impl Chip8 {
             },
             0xF000 => {
                 match self.opcode & 0x00FF {
+                    0x0007 => {
+                        let register = (self.opcode & 0x0F00) >> 8;
+                        self.v[register as usize] = self.delay_timer;
+
+                        self.pc += 2;
+                        println!("Set V[{:x}] to value of delay timer ({})", register, self.delay_timer);
+                    },
                     0x0015 => {
                         let vx = self.v[((self.opcode & 0x0F00) >> 8) as usize];
                         self.delay_timer = vx;
