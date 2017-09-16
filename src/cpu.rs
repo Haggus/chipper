@@ -82,6 +82,11 @@ impl Chip8 {
         self.opcode = first << 8 | second;
         println!("Opcode fetched: {:x}", self.opcode);
 
+        let vx = (self.opcode & 0x0F00) >> 8;
+        let vy = (self.opcode & 0x00F0) >> 4;
+        let nn = self.opcode & 0x00FF;
+        let address = self.opcode & 0x0FFF;
+
         // Decode & execute opcode
         match self.opcode & 0xF000 {
             0x0000 => {
@@ -112,58 +117,42 @@ impl Chip8 {
                 // Because it is a subroutine, we should not increase program counter
             },
             0x3000 => {
-                let register = (self.opcode & 0x0F00) >> 8;
-                let value = self.opcode & 0x00FF;
-
-                if self.v[register as usize] == value as u8 {
-                    println!("Register V[{:x}] is equal to {:x}. Skipping the next instruction", register, value);
+                if self.v[vx as usize] == nn as u8 {
+                    println!("Register V[{:x}] is equal to {:x}. Skipping the next instruction", vx, nn);
                     self.pc += 4;
                 } else {
-                    println!("Register V[{:x}] is NOT equal to {:x}", register, value);
+                    println!("Register V[{:x}] is NOT equal to {:x}", vx, nn);
                     self.pc += 2;
                 }
             },
             0x4000 => {
-                let register = (self.opcode & 0x0F00) >> 8;
-                let value = self.opcode & 0x00FF;
-
-                if self.v[register as usize] != value as u8 {
-                    println!("Register V[{:x}] is NOT equal to {:x}. Skipping the next instruction", register, value);
+                if self.v[vx as usize] != nn as u8 {
+                    println!("Register V[{:x}] is NOT equal to {:x}. Skipping the next instruction", vx, nn);
                     self.pc += 4;
                 } else {
-                    println!("Register V[{:x}] is equal to {:x}", register, value);
+                    println!("Register V[{:x}] is equal to {:x}", vx, nn);
                     self.pc += 2;
                 }
             },
             0x6000 => {
-                let register = (self.opcode & 0x0F00) >> 8;
-                let value = self.opcode & 0x00FF;
-
-                self.v[register as usize] = value as u8;
+                self.v[vx as usize] = nn as u8;
                 self.pc += 2;
-                println!("Set V[{:x}] to {:x}", register, value);
+                println!("Set V[{:x}] to {:x}", vx, nn);
             },
             0x7000 => {
-                let register = (self.opcode & 0x0F00) >> 8;
-                let value = self.opcode & 0x00FF;
-
-                self.v[register as usize] += value as u8;
+                self.v[vx as usize] += nn as u8;
                 self.pc += 2;
-                println!("Add {:x} to V[{:x}]", value, register);
+                println!("Add {:x} to V[{:x}]", nn, vx);
             },
             0x8000 => {
                 match self.opcode & 0x000F {
                     0x0002 => {
-                        let vx = (self.opcode & 0x0F00) >> 8;
-                        let vy = (self.opcode & 0x00F0) >> 8;
                         self.v[vx as usize] = self.v[vx as usize] & self.v[vy as usize];
 
                         self.pc += 2;
                         println!("Sets V[{:x}] to V[{:x}] and V[{:x}] (Bitwise OR)", vx, vx, vy);
                     },
                     0x0004 => {
-                        let vx = (self.opcode & 0x0F00) >> 8;
-                        let vy = (self.opcode & 0x00F0) >> 8;
                         let (value, overflow) = self.v[vy as usize].overflowing_add(self.v[vx as usize]);
 
                         if overflow {
@@ -180,23 +169,18 @@ impl Chip8 {
                 }
             },
             0xA000 => {
-                let address = self.opcode & 0x0FFF;
-
                 self.i = address;
                 self.pc += 2;
                 println!("Set I to {:x}", address);
             },
             0xC000 => {
-                let register = (self.opcode & 0x0F00) >> 8;
-                let value = self.opcode & 0x00FF;
-
-                self.v[register as usize] = (random::<u8>() as u16 & value) as u8;
+                self.v[vx as usize] = (random::<u8>() as u16 & nn) as u8;
                 self.pc += 2;
-                println!("Random value saved in V[{:x}]", register);
+                println!("Random value saved in V[{:x}]", vx);
             },
             0xD000 => {
-                let x = self.v[((self.opcode & 0x0F00) >> 8) as usize] as u16;
-                let y = self.v[((self.opcode & 0x00F0) >> 4) as usize] as u16;
+                let x = self.v[vx as usize] as u16;
+                let y = self.v[vy as usize] as u16;
                 let height = self.opcode & 0x000F;
                 println!("Draw to screen. Lines: {}, starting at x={}, y={}", height, x, y);
 
@@ -223,8 +207,7 @@ impl Chip8 {
             0xE000 => {
                 match self.opcode & 0x00FF {
                     0x00A1 => {
-                        let vx = self.v[((self.opcode & 0x0F00) >> 8) as usize];
-                        if self.key[vx as usize] != 1 {
+                        if self.key[self.v[vx as usize] as usize] != 1 {
                             println!("Key {:x} is NOT pressed. Skipping the next instruction", vx);
                             self.pc += 4;
                         } else {
@@ -238,44 +221,37 @@ impl Chip8 {
             0xF000 => {
                 match self.opcode & 0x00FF {
                     0x0007 => {
-                        let register = (self.opcode & 0x0F00) >> 8;
-                        self.v[register as usize] = self.delay_timer;
+                        self.v[vx as usize] = self.delay_timer;
 
                         self.pc += 2;
-                        println!("Set V[{:x}] to value of delay timer ({})", register, self.delay_timer);
+                        println!("Set V[{:x}] to value of delay timer ({})", vx, self.delay_timer);
                     },
                     0x0015 => {
-                        let vx = self.v[((self.opcode & 0x0F00) >> 8) as usize];
-                        self.delay_timer = vx;
+                        self.delay_timer = self.v[vx as usize];
 
                         self.pc += 2;
                         println!("Set delay timer to \"{}\"", vx);
                     },
                     0x0029 => {
-                        let vx = self.v[((self.opcode & 0x0F00) >> 8) as usize];
-                        self.i = self.memory[(vx * 5) as usize] as u16;
+                        self.i = self.memory[(self.v[vx as usize] * 5) as usize] as u16;
 
                         self.pc += 2;
                         println!("Set I to address of digit \"{}\"", vx);
                     },
                     0x0033 => {
-                        let register = (self.opcode & 0x0F00) >> 8;
-                        let vx = self.v[register as usize];
-                        self.memory[self.i as usize] = vx / 100;
-                        self.memory[self.i as usize + 1] = (vx / 10) % 10;
-                        self.memory[self.i as usize + 2] = (vx % 100) % 10;
+                        self.memory[self.i as usize] = self.v[vx as usize] / 100;
+                        self.memory[self.i as usize + 1] = (self.v[vx as usize] / 10) % 10;
+                        self.memory[self.i as usize + 2] = (self.v[vx as usize] % 100) % 10;
 
                         self.pc += 2;
                         println!("Binary-coded decimal saved into memory");
                     },
                     0x0065 => {
-                        let register = (self.opcode & 0x0F00) >> 8;
-
-                        for i in 0..register + 1 {
+                        for i in 0..vx + 1 {
                             self.v[i as usize] = self.memory[self.i as usize];
                         }
                         self.pc += 2;
-                        println!("V[{:x}] - V[{:x}] values have been replaced with {:x}", 0, register, self.memory[self.i as usize]);
+                        println!("V[0] - V[{:x}] values have been replaced with {:x}", vx, self.memory[self.i as usize]);
                     },
                     _ => panic!("Unknown opcode: {:x}", self.opcode),
                 }
