@@ -249,6 +249,12 @@ impl Chip8 {
                         self.pc += 2;
                         println!("Set delay timer to \"{}\"", vx);
                     },
+                    0x0018 => {
+                        self.sound_timer = self.v[vx as usize];
+
+                        self.pc += 2;
+                        println!("Set sound timer to \"{}\"", vx);
+                    },
                     0x0029 => {
                         self.i = self.memory[(self.v[vx as usize] * 5) as usize] as u16;
 
