@@ -100,6 +100,9 @@ fn main() {
 
         // If the draw flag is set, update the screen
         if cpu.draw_flag {
+            canvas.set_draw_color(Color::RGB(40, 40, 40));
+            canvas.clear();
+
             canvas.set_draw_color(Color::RGB(184, 186, 60));
             for x in 0..64 {
                 for y in 0..32 {
@@ -108,6 +111,7 @@ fn main() {
                     }
                 }
             }
+            cpu.draw_flag = false;
         }
         canvas.present();
     }
