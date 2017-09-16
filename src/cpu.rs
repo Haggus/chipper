@@ -201,12 +201,12 @@ impl Chip8 {
                 println!("Draw to screen. Lines: {}, starting at x={}, y={}", height, x, y);
 
                 self.v[0xF] = 0;
-                for h in 0..height {
-                    let line = self.memory[(self.i + h) as usize];
+                for line in 0..height {
+                    let data = self.memory[(self.i + line) as usize];
 
-                    for b in (0..8).rev() {
-                        if (line & (1 << b)) != 0 {
-                            let pixel = x + b as u16 + ((y + h) * 64) as u16;
+                    for b in 0..8 {
+                        if (data & (0x80 >> b)) != 0 {
+                            let pixel = x + b as u16 + ((y + line) * 64) as u16;
 
                             if self.gfx[pixel as usize] == 1 {
                                 self.v[0xF] = 1;
