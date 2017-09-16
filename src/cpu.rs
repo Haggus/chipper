@@ -123,6 +123,18 @@ impl Chip8 {
                     self.pc += 2;
                 }
             },
+            0x4000 => {
+                let register = (self.opcode & 0x0F00) >> 8;
+                let value = self.opcode & 0x00FF;
+
+                if self.v[register as usize] != value as u8 {
+                    println!("Register V[{:x}] is NOT equal to {:x}. Skipping the next instruction", register, value);
+                    self.pc += 4;
+                } else {
+                    println!("Register V[{:x}] is equal to {:x}", register, value);
+                    self.pc += 2;
+                }
+            },
             0x6000 => {
                 let register = (self.opcode & 0x0F00) >> 8;
                 let value = self.opcode & 0x00FF;
