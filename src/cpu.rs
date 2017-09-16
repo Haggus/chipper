@@ -37,7 +37,7 @@ pub struct Chip8 {
     sp: u16,
 
     // Finally, the Chip 8 has a HEX based keypad (0x0-0xF), you can use an array to store the current state of the key.
-    key: [u8; 16],
+    pub key: [u8; 16],
 }
 
 impl Chip8 {
