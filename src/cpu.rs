@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::Read;
 
-use font::fontset;
+use font::FONTSET;
 
 pub struct Chip8 {
     // The systems memory map:
@@ -45,8 +45,8 @@ impl Chip8 {
         let mut mem: [u8; 4000] = [0; 4000];
 
         // Load fonts to memory
-        for f in 0..fontset.len() {
-            mem[f] = fontset[f];
+        for f in 0..FONTSET.len() {
+            mem[f] = FONTSET[f];
         }
 
         Chip8 {
