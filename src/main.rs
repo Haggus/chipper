@@ -1,4 +1,5 @@
 mod cpu;
+mod font;
 
 use cpu::Chip8;
 

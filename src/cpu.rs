@@ -1,6 +1,8 @@
 use std::fs::File;
 use std::io::Read;
 
+use font::fontset;
+
 pub struct Chip8 {
     // The systems memory map:
     // 0x000-0x1FF - Chip 8 interpreter (contains font set in emu)
@@ -40,9 +42,16 @@ pub struct Chip8 {
 impl Chip8 {
     pub fn new() -> Chip8 {
         // Initialize memory and registers
+        let mut mem: [u8; 4000] = [0; 4000];
+
+        // Load fonts to memory
+        for f in 0..fontset.len() {
+            mem[f] = fontset[f];
+        }
+
         Chip8 {
             opcode: 0,
-            memory: [0; 4000],
+            memory: mem,
             v: [0; 16],
             i: 0,
             pc: 0x200, // program counter starts at 0x200
