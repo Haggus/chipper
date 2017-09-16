@@ -146,6 +146,12 @@ impl Chip8 {
             },
             0x8000 => {
                 match self.opcode & 0x000F {
+                    0x0000 => {
+                        self.v[vx as usize] = self.v[vy as usize];
+
+                        self.pc += 2;
+                        println!("Set V[{:x}] to the value of V[{:x}]", vx, vy);
+                    },
                     0x0002 => {
                         self.v[vx as usize] = self.v[vx as usize] & self.v[vy as usize];
 
