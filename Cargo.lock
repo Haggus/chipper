@@ -2,6 +2,7 @@
 name = "chipper"
 version = "0.1.0"
 dependencies = [
+ "rand 0.3.16 (registry+https://github.com/rust-lang/crates.io-index)",
  "sdl2 0.30.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
