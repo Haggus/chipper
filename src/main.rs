@@ -4,6 +4,7 @@ extern crate rand;
 mod cpu;
 mod font;
 
+use std::time::{Instant, Duration};
 use sdl2::event::Event;
 use sdl2::rect::Rect;
 use sdl2::pixels::Color;
@@ -28,6 +29,8 @@ fn main() {
     // Initialize the Chip8 system and load the game into the memory
     let mut cpu = Chip8::new();
     cpu.load_game("PONG2");
+
+    let mut last_frame = Instant::now();
 
     // Emulation loop
     'game: loop {
@@ -95,8 +98,11 @@ fn main() {
             }
         }
 
-        // Emulate one cycle
-        cpu.emulate_cycle();
+        if last_frame.elapsed().subsec_nanos() > 100_000_000 / 60  {
+            cpu.emulate_cycle();
+
+            last_frame = Instant::now();
+        }
 
         // If the draw flag is set, update the screen
         if cpu.draw_flag {
