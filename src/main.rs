@@ -1,5 +1,6 @@
 extern crate sdl2;
 extern crate rand;
+extern crate clap;
 
 mod cpu;
 mod font;
@@ -9,9 +10,24 @@ use sdl2::event::Event;
 use sdl2::rect::Rect;
 use sdl2::pixels::Color;
 use sdl2::keyboard::Keycode;
+use clap::{App, Arg};
+
 use cpu::Chip8;
 
 fn main() {
+    let matches = App::new("Chipper")
+                    .version("1.0")
+                    .author("Mateusz Mrowiec <matt.mrowiec@gmail.com>")
+                    .about("Chip8 emulator/interpreter")
+                    .arg(Arg::with_name("INPUT")
+                        .help("Sets the input file to use")
+                        .required(true)
+                        .index(1))
+                    .get_matches();
+
+    let input_file = matches.value_of("INPUT").unwrap();
+    println!("Using input file: {}", input_file);
+
     // Set up render system and register input callbacks
     let context = sdl2::init().unwrap();
     let video = context.video().unwrap();
@@ -28,7 +44,7 @@ fn main() {
 
     // Initialize the Chip8 system and load the game into the memory
     let mut cpu = Chip8::new();
-    cpu.load_game("PONG2");
+    cpu.load_game(input_file);
 
     let mut last_frame = Instant::now();
 
