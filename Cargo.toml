@@ -6,3 +6,4 @@ authors = ["Mateusz 'Haggus' Mrowiec <matt.mrowiec@gmail.com>"]
 [dependencies]
 sdl2 = "0.30.0"
 rand = "0.3.16"
+clap = "2.26.2"
