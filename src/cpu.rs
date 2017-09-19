@@ -102,7 +102,7 @@ impl Chip8 {
                 }
             },
             0x1000 => {
-                self.pc = self.opcode & 0x0FFF;
+                self.pc = address;
                 println!("Jump to {:x}", self.pc);
             },
             0x2000 => {
@@ -112,7 +112,7 @@ impl Chip8 {
                 // Increase the stack pointer to prevent overwriting the current stack
                 self.sp += 1;
 
-                self.pc = self.opcode & 0x0FFF;
+                self.pc = address;
                 println!("Call subroutine at {:x}", self.pc);
                 // Because it is a subroutine, we should not increase program counter
             },
