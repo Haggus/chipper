@@ -140,8 +140,7 @@ impl Chip8 {
                 println!("Set V[{:x}] to {:x}", vx, nn);
             },
             0x7000 => {
-                let (value, _) = self.v[vx as usize].overflowing_add(nn as u8);
-                self.v[vx as usize] = value;
+                self.v[vx as usize] = self.v[vx as usize].wrapping_add(nn as u8);
 
                 self.pc += 2;
                 println!("Add {:x} to V[{:x}]", nn, vx);
