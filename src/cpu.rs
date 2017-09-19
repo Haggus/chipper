@@ -273,7 +273,7 @@ impl Chip8 {
                     },
                     0x0065 => {
                         for i in 0..vx + 1 {
-                            self.v[i as usize] = self.memory[self.i as usize];
+                            self.v[i as usize] = self.memory[(self.i + i) as usize];
                         }
                         self.pc += 2;
                         println!("V[0] - V[{:x}] values have been replaced with {:x}", vx, self.memory[self.i as usize]);
