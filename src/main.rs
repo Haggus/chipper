@@ -4,7 +4,7 @@ extern crate rand;
 mod cpu;
 mod font;
 
-use std::time::{Instant, Duration};
+use std::time::{Instant};
 use sdl2::event::Event;
 use sdl2::rect::Rect;
 use sdl2::pixels::Color;
