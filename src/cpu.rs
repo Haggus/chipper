@@ -107,6 +107,13 @@ impl Chip8 {
         match self.opcode & 0xF000 {
             0x0000 => {
                 match self.opcode & 0x000F {
+                    0x0000 => {
+                        self.gfx = [0; 64 * 32];
+
+                        self.draw_flag = true;
+                        self.pc += 2;
+                        println!("Clear screen")
+                    }
                     0x000E => {
                         self.sp -= 1;
                         self.pc = self.stack[self.sp as usize];
