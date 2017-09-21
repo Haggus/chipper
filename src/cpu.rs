@@ -303,6 +303,12 @@ impl Chip8 {
                         self.pc += 2;
                         println!("Set sound timer to \"{}\"", vx);
                     }
+                    0x001E => {
+                        self.i += self.v[vx as usize] as u16;
+
+                        self.pc += 2;
+                        println!("Add V[{:x}] to I", vx);
+                    }
                     0x0029 => {
                         self.i = self.v[vx as usize] as u16 * 5;
 
