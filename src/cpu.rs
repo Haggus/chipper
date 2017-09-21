@@ -297,7 +297,7 @@ impl Chip8 {
                         println!("Set sound timer to \"{}\"", vx);
                     }
                     0x0029 => {
-                        self.i = self.memory[(self.v[vx as usize] * 5) as usize] as u16;
+                        self.i = self.v[vx as usize] as u16 * 5;
 
                         self.pc += 2;
                         println!("Set I to address of digit \"{}\"", vx);
