@@ -290,6 +290,10 @@ impl Chip8 {
                 self.pc += 2;
                 println!("Set I to {:x}", address);
             }
+            0xB000 => {
+                self.pc = address + self.v[0x0] as u16;
+                println!("Jumps to the address {:x} plus V0.", address);
+            }
             0xC000 => {
                 self.v[vx as usize] = (random::<u8>() as u16 & nn) as u8;
                 self.pc += 2;
