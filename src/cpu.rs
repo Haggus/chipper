@@ -306,7 +306,12 @@ impl Chip8 {
 
                     for b in 0..8 {
                         if (data & (0x80 >> b)) != 0 {
-                            let pixel = x + b as u16 + ((y + line) * 64) as u16;
+                            let mut pixel = x + b as u16 + ((y + line) * 64) as u16;
+
+                            // Check for overflow
+                            if pixel >= 64 * 32 {
+                                pixel -= 64 * 32;
+                            }
 
                             if self.gfx[pixel as usize] == 1 {
                                 self.v[0xF] = 1;
