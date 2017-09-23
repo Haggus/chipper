@@ -165,6 +165,19 @@ impl Chip8 {
                     self.pc += 2;
                 }
             }
+            0x5000 => {
+                if self.v[vx as usize] == self.v[vy as usize] {
+                    println!(
+                        "Register V[{:x}] is equal to V[{:x}]. Skipping the next instruction",
+                        vx,
+                        vy
+                    );
+                    self.pc += 4;
+                } else {
+                    println!("Register V[{:x}] is NOT equal to V[{:x}]", vx, vy);
+                    self.pc += 2;
+                }
+            }
             0x6000 => {
                 self.v[vx as usize] = nn as u8;
                 self.pc += 2;
