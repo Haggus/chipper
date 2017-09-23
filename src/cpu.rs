@@ -273,6 +273,15 @@ impl Chip8 {
             }
             0xE000 => {
                 match self.opcode & 0x00FF {
+                    0x009E => {
+                        if self.key[self.v[vx as usize] as usize] == 1 {
+                            println!("Key {:x} is pressed. Skipping the next instruction", vx);
+                            self.pc += 4;
+                        } else {
+                            println!("Key {:x} is NOT pressed", vx);
+                            self.pc += 2;
+                        }
+                    }
                     0x00A1 => {
                         if self.key[self.v[vx as usize] as usize] != 1 {
                             println!("Key {:x} is NOT pressed. Skipping the next instruction", vx);
