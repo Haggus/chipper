@@ -291,6 +291,16 @@ impl Chip8 {
                             self.delay_timer
                         );
                     }
+                    0x000A => {
+                        for k in 0..self.key.len() {
+                            if self.key[k] > 0 {
+                                self.v[vx as usize] = k as u8;
+
+                                self.pc += 2;
+                                println!("Key '{:x}' pressed. Set V[{:x}] to {:x}", k, vx, k);
+                            }
+                        }
+                    }
                     0x0015 => {
                         self.delay_timer = self.v[vx as usize];
 
