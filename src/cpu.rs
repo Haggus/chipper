@@ -141,11 +141,9 @@ impl Chip8 {
             }
             0x3000 => {
                 if self.v[vx as usize] == nn as u8 {
-                    println!(
-                        "Register V[{:x}] is equal to {:x}. Skipping the next instruction",
-                        vx,
-                        nn
-                    );
+                    println!("Register V[{:x}] is equal to {:x}. Skipping the next instruction",
+                             vx,
+                             nn);
                     self.pc += 4;
                 } else {
                     println!("Register V[{:x}] is NOT equal to {:x}", vx, nn);
@@ -154,11 +152,10 @@ impl Chip8 {
             }
             0x4000 => {
                 if self.v[vx as usize] != nn as u8 {
-                    println!(
-                        "Register V[{:x}] is NOT equal to {:x}. Skipping the next instruction",
-                        vx,
-                        nn
-                    );
+                    println!("Register V[{:x}] is NOT equal to {:x}. Skipping the next \
+                              instruction",
+                             vx,
+                             nn);
                     self.pc += 4;
                 } else {
                     println!("Register V[{:x}] is equal to {:x}", vx, nn);
@@ -167,11 +164,9 @@ impl Chip8 {
             }
             0x5000 => {
                 if self.v[vx as usize] == self.v[vy as usize] {
-                    println!(
-                        "Register V[{:x}] is equal to V[{:x}]. Skipping the next instruction",
-                        vx,
-                        vy
-                    );
+                    println!("Register V[{:x}] is equal to V[{:x}]. Skipping the next instruction",
+                             vx,
+                             vy);
                     self.pc += 4;
                 } else {
                     println!("Register V[{:x}] is NOT equal to V[{:x}]", vx, vy);
@@ -201,23 +196,16 @@ impl Chip8 {
                         self.v[vx as usize] = self.v[vx as usize] | self.v[vy as usize];
 
                         self.pc += 2;
-                        println!(
-                            "Set V[{:x}] to V[{:x}] or V[{:x}] (Bitwise OR)",
-                            vx,
-                            vx,
-                            vy
-                        );
+                        println!("Set V[{:x}] to V[{:x}] or V[{:x}] (Bitwise OR)", vx, vx, vy);
                     }
                     0x0002 => {
                         self.v[vx as usize] = self.v[vx as usize] & self.v[vy as usize];
 
                         self.pc += 2;
-                        println!(
-                            "Set V[{:x}] to V[{:x}] and V[{:x}] (Bitwise AND)",
-                            vx,
-                            vx,
-                            vy
-                        );
+                        println!("Set V[{:x}] to V[{:x}] and V[{:x}] (Bitwise AND)",
+                                 vx,
+                                 vx,
+                                 vy);
                     }
                     0x0003 => {
                         self.v[vx as usize] = self.v[vx as usize] ^ self.v[vy as usize];
@@ -226,8 +214,8 @@ impl Chip8 {
                         println!("Set V[{:x}] to V[{:x}] xor V[{:x}]", vx, vx, vy);
                     }
                     0x0004 => {
-                        let (value, overflow) =
-                            self.v[vx as usize].overflowing_add(self.v[vy as usize]);
+                        let (value, overflow) = self.v[vx as usize]
+                            .overflowing_add(self.v[vy as usize]);
                         if overflow {
                             self.v[0xF] = 1;
                         } else {
@@ -239,8 +227,8 @@ impl Chip8 {
                         println!("Add V[{:x}] to V[{:x}]", vy, vx);
                     }
                     0x0005 => {
-                        let (value, overflow) =
-                            self.v[vx as usize].overflowing_sub(self.v[vy as usize]);
+                        let (value, overflow) = self.v[vx as usize]
+                            .overflowing_sub(self.v[vy as usize]);
                         if overflow {
                             self.v[0xF] = 0;
                         } else {
@@ -256,10 +244,13 @@ impl Chip8 {
                         self.v[vx as usize] = self.v[vy as usize] >> 1;
 
                         self.pc += 2;
-                        println!("Shift V[{:x}] right by one and copy the result to V[{:x}]", vy, vx);
+                        println!("Shift V[{:x}] right by one and copy the result to V[{:x}]",
+                                 vy,
+                                 vx);
                     }
                     0x0007 => {
-                        let (value, overflow) = self.v[vy as usize].overflowing_sub(self.v[vx as usize]);
+                        let (value, overflow) = self.v[vy as usize]
+                            .overflowing_sub(self.v[vx as usize]);
                         if overflow {
                             self.v[0xF] = 0;
                         } else {
@@ -276,14 +267,18 @@ impl Chip8 {
                         self.v[vx as usize] = value;
 
                         self.pc += 2;
-                        println!("Shift V[{:x}] left by one and copy the result to V[{:x}]", vy, vx);
+                        println!("Shift V[{:x}] left by one and copy the result to V[{:x}]",
+                                 vy,
+                                 vx);
                     }
                     _ => panic!("Unknown opcode: {:x}", self.opcode),
                 }
             }
             0x9000 => {
                 if self.v[vx as usize] != self.v[vy as usize] {
-                    println!("V[{:x}] is NOT equal to V[{:x}]. Skipping the next instruction", vx, vy);
+                    println!("V[{:x}] is NOT equal to V[{:x}]. Skipping the next instruction",
+                             vx,
+                             vy);
                     self.pc += 4;
                 } else {
                     println!("V[{:x}] is equal to V[{:x}]", vx, vy);
@@ -304,12 +299,10 @@ impl Chip8 {
                 let x = self.v[vx as usize] as u16;
                 let y = self.v[vy as usize] as u16;
                 let height = self.opcode & 0x000F;
-                println!(
-                    "Draw to screen. Lines: {}, starting at x={}, y={}",
-                    height,
-                    x,
-                    y
-                );
+                println!("Draw to screen. Lines: {}, starting at x={}, y={}",
+                         height,
+                         x,
+                         y);
 
                 self.v[0xF] = 0;
                 for line in 0..height {
@@ -365,11 +358,9 @@ impl Chip8 {
                         self.v[vx as usize] = self.delay_timer;
 
                         self.pc += 2;
-                        println!(
-                            "Set V[{:x}] to value of delay timer ({})",
-                            vx,
-                            self.delay_timer
-                        );
+                        println!("Set V[{:x}] to value of delay timer ({})",
+                                 vx,
+                                 self.delay_timer);
                     }
                     0x000A => {
                         for k in 0..self.key.len() {
@@ -426,11 +417,9 @@ impl Chip8 {
                             self.v[i as usize] = self.memory[(self.i + i) as usize];
                         }
                         self.pc += 2;
-                        println!(
-                            "V[0] - V[{:x}] values have been replaced with {:x}",
-                            vx,
-                            self.memory[self.i as usize]
-                        );
+                        println!("V[0] - V[{:x}] values have been replaced with {:x}",
+                                 vx,
+                                 self.memory[self.i as usize]);
                     }
                     _ => panic!("Unknown opcode: {:x}", self.opcode),
                 }
