@@ -197,12 +197,23 @@ impl Chip8 {
                         self.pc += 2;
                         println!("Set V[{:x}] to the value of V[{:x}]", vx, vy);
                     }
+                    0x0001 => {
+                        self.v[vx as usize] = self.v[vx as usize] | self.v[vy as usize];
+
+                        self.pc += 2;
+                        println!(
+                            "Set V[{:x}] to V[{:x}] or V[{:x}] (Bitwise OR)",
+                            vx,
+                            vx,
+                            vy
+                        );
+                    }
                     0x0002 => {
                         self.v[vx as usize] = self.v[vx as usize] & self.v[vy as usize];
 
                         self.pc += 2;
                         println!(
-                            "Set V[{:x}] to V[{:x}] and V[{:x}] (Bitwise OR)",
+                            "Set V[{:x}] to V[{:x}] and V[{:x}] (Bitwise AND)",
                             vx,
                             vx,
                             vy
