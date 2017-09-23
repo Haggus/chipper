@@ -230,6 +230,15 @@ impl Chip8 {
                     _ => panic!("Unknown opcode: {:x}", self.opcode),
                 }
             }
+            0x9000 => {
+                if self.v[vx as usize] != self.v[vy as usize] {
+                    println!("V[{:x}] is NOT equal to V[{:x}]. Skipping the next instruction", vx, vy);
+                    self.pc += 4;
+                } else {
+                    println!("V[{:x}] is equal to V[{:x}]", vx, vy);
+                    self.pc += 2;
+                }
+            }
             0xA000 => {
                 self.i = address;
                 self.pc += 2;
