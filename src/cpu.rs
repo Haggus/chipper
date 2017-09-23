@@ -189,11 +189,17 @@ impl Chip8 {
 
                         self.pc += 2;
                         println!(
-                            "Sets V[{:x}] to V[{:x}] and V[{:x}] (Bitwise OR)",
+                            "Set V[{:x}] to V[{:x}] and V[{:x}] (Bitwise OR)",
                             vx,
                             vx,
                             vy
                         );
+                    }
+                    0x0003 => {
+                        self.v[vx as usize] = self.v[vx as usize] ^ self.v[vy as usize];
+
+                        self.pc += 2;
+                        println!("Set V[{:x}] to V[{:x}] xor V[{:x}]", vx, vx, vy);
                     }
                     0x0004 => {
                         let (value, overflow) =
