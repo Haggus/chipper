@@ -227,6 +227,13 @@ impl Chip8 {
                         self.pc += 2;
                         println!("Subtract V[{:x}] from V[{:x}]", vy, vx);
                     }
+                    0x0006 => {
+                        self.v[0xF] = self.v[vy as usize] & 0x1;
+                        self.v[vx as usize] = self.v[vy as usize] >> 1;
+
+                        self.pc += 2;
+                        println!("Shift V[{:x}] right by one and copy the result to V[{:x}]", vy, vx);
+                    }
                     0x0007 => {
                         let (value, overflow) = self.v[vy as usize].overflowing_sub(self.v[vx as usize]);
                         if overflow {
