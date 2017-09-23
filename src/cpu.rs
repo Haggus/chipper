@@ -259,6 +259,14 @@ impl Chip8 {
                         self.pc += 2;
                         println!("Set V[{:x}] to V[{:x}] minus V[{:x}]", vx, vy, vx);
                     }
+                    0x000E => {
+                        self.v[0xF] = self.v[vy as usize] & 0x80;
+                        let (value, _) = self.v[vy as usize].overflowing_shl(1);
+                        self.v[vx as usize] = value;
+
+                        self.pc += 2;
+                        println!("Shift V[{:x}] left by one and copy the result to V[{:x}]", vy, vx);
+                    }
                     _ => panic!("Unknown opcode: {:x}", self.opcode),
                 }
             }
