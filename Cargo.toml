@@ -7,3 +7,4 @@ authors = ["Mateusz 'Haggus' Mrowiec <matt.mrowiec@gmail.com>"]
 sdl2 = "0.30.0"
 rand = "0.3.16"
 clap = "2.26.2"
+rodio = "0.5.2"

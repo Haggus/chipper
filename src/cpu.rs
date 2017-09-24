@@ -1,6 +1,10 @@
 use std::fs::File;
 use std::io::Read;
+use std::time::Duration;
 use rand::random;
+use rodio::{get_default_endpoint, play_raw};
+use rodio::source::SineWave;
+use rodio::Source;
 
 use font::FONTSET;
 
@@ -438,7 +442,10 @@ impl Chip8 {
 
         if self.sound_timer > 0 {
             if self.sound_timer == 1 {
-                println!("Beep!");
+                let endpoint = get_default_endpoint().unwrap();
+                let source = SineWave::new(440).take_duration(Duration::from_millis(200));
+
+                play_raw(&endpoint, source);
             }
             self.sound_timer -= 1;
         }

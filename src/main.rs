@@ -1,6 +1,7 @@
 extern crate sdl2;
 extern crate rand;
 extern crate clap;
+extern crate rodio;
 
 mod cpu;
 mod font;
