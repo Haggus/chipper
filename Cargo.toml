@@ -2,6 +2,12 @@
 name = "chipper"
 version = "0.1.0"
 authors = ["Mateusz 'Haggus' Mrowiec <matt.mrowiec@gmail.com>"]
+description = "CHIP-8 Emulator/Interpreter"
+homepage = "https://github.com/Haggus/chipper"
+repository = "https://github.com/Haggus/chipper"
+keywords = ["chip8", "chip-8", "emulator", "interpreter"]
+categories = ["emulators", "games", "multimedia::video", "multimedia::audio"]
+readme = "README.md"
 
 [dependencies]
 sdl2 = "0.30.0"
