@@ -2,6 +2,7 @@
 name = "chipper"
 version = "0.1.0"
 authors = ["Mateusz 'Haggus' Mrowiec <matt.mrowiec@gmail.com>"]
+license = "MIT/Apache-2.0"
 description = "CHIP-8 Emulator/Interpreter"
 homepage = "https://github.com/Haggus/chipper"
 repository = "https://github.com/Haggus/chipper"
